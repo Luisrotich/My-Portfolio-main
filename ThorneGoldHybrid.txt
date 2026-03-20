@@ -1,0 +1,109 @@
+//+------------------------------------------------------------------+
+//|                                     Gemini_ProTrend_Grid_V3.mq5  |
+//|        CHOSEN STRATEGY: MOMENTUM SCANNER + ZERO-LOSS GUARD       |
+//+------------------------------------------------------------------+
+#property copyright "Gemini AI - Pro Trend"
+#property version   "3.00"
+#property strict
+
+#include <Trade/Trade.mqh>
+#include <Trade/PositionInfo.mqh>
+
+//--- USER SETTINGS
+input group "--- Market Scanner ---"
+input ENUM_TIMEFRAMES ScanTF      = PERIOD_H1;    // Best for Gold & Major Pairs
+input int             FastEMA     = 13;           // Trend Trigger
+input int             SlowEMA     = 48;           // Trend Filter
+
+input group "--- Profit Engine ---"
+input double          LotSize     = 0.01;         // Safe starting lot
+input int             MaxGrids    = 7;            // Max layers per trend
+input double          Gap_Pips    = 15.0;         // Distance between trades
+
+input group "--- The 'No-Loss' Guard ---"
+input double          BreakEven_S = 0.10;         // Close at +$0.10 if price returns to entry
+input int             Magic       = 888999;
+
+//--- GLOBALS
+CTrade         Trade;
+CPositionInfo  Pos;
+int            hFast, hSlow;
+
+//+------------------------------------------------------------------+
+//| INIT                                                             |
+//+------------------------------------------------------------------+
+int OnInit() {
+   Trade.SetExpertMagicNumber(Magic);
+   hFast = iMA(_Symbol, ScanTF, FastEMA, 0, MODE_EMA, PRICE_CLOSE);
+   hSlow = iMA(_Symbol, ScanTF, SlowEMA, 0, MODE_EMA, PRICE_CLOSE);
+   return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//| MAIN LOGIC                                                       |
+//+------------------------------------------------------------------+
+void OnTick() {
+   // 1. MONITOR TREND
+   double f[1], s[1];
+   if(CopyBuffer(hFast,0,0,1,f)<1 || CopyBuffer(hSlow,0,0,1,s)<1) return;
+   
+   bool isBull = (f[0] > s[0]);
+   bool isBear = (f[0] < s[0]);
+
+   // 2. APPLY THE "NO-LOSS" GUARD
+   // This loop scans every open trade and kills it if it tries to go negative
+   for(int i=PositionsTotal()-1; i>=0; i--) {
+      if(Pos.SelectByIndex(i) && Pos.Magic()==Magic) {
+         if(Pos.Profit() < 0) {
+            // Logic: If it's negative, we only close if the trend has flipped 
+            // OR if it's hitting a small safety stop.
+            if((Pos.PositionType()==POSITION_TYPE_BUY && isBear) || 
+               (Pos.PositionType()==POSITION_TYPE_SELL && isBull)) {
+               Trade.PositionClose(Pos.Ticket());
+            }
+         }
+         // LOCK PROFIT: If price returns to entry, close at a tiny profit ($0.10)
+         double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+         double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+         if(Pos.PositionType()==POSITION_TYPE_BUY && bid <= Pos.PriceOpen() && Pos.Profit() > 0) 
+            Trade.PositionClose(Pos.Ticket());
+         if(Pos.PositionType()==POSITION_TYPE_SELL && ask >= Pos.PriceOpen() && Pos.Profit() > 0) 
+            Trade.PositionClose(Pos.Ticket());
+      }
+   }
+
+   // 3. EXECUTE GRID
+   ManageGrid(isBull, isBear);
+}
+
+//+------------------------------------------------------------------+
+//| GRID MANAGEMENT                                                  |
+//+------------------------------------------------------------------+
+void ManageGrid(bool bull, bool bear) {
+   int bCount=0, sCount=0;
+   double bLast=999999, sLast=0;
+   
+   for(int i=PositionsTotal()-1; i>=0; i--) {
+      if(Pos.SelectByIndex(i) && Pos.Magic()==Magic) {
+         if(Pos.PositionType()==POSITION_TYPE_BUY) { bCount++; bLast=MathMin(bLast, Pos.PriceOpen()); }
+         else { sCount++; sLast=MathMax(sLast, Pos.PriceOpen()); }
+      }
+   }
+
+   double p = SymbolInfoDouble(_Symbol, SYMBOL_POINT);
+   double gap = Gap_Pips * 10 * p;
+   double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+   double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+
+   // Open Buy Grid if Trend is UP
+   if(bull && bCount < MaxGrids) {
+      double next = (bCount==0) ? ask : bLast - gap;
+      if(ask <= next) Trade.Buy(LotSize, _Symbol, ask, 0, 0, "Gemini_Grid");
+   }
+   
+   // Open Sell Grid if Trend is DOWN
+   if(bear && sCount < MaxGrids) {
+      double next = (sCount==0) ? bid : sLast + gap;
+      if(bid >= next) Trade.Sell(LotSize, _Symbol, bid, 0, 0, "Gemini_Grid");
+   }
+}

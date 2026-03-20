@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Luis Rotich · Web Developer & Tech Entrepreneur</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- keep original w3.css + Montserrat, exactly like source but we will adapt content -->
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
+    .w3-row-padding img {margin-bottom: 12px}
+    /* sidebar width fixed (120px) — same as template */
+    .w3-sidebar {width: 120px; background: #222;}
+    #main {margin-left: 120px}
+    @media only screen and (max-width: 600px) {#main {margin-left: 0}}
+    
+    /* make avatar circle in sidebar — developer touch */
+    .sidebar-avatar {
+      width: 100%;
+      border-radius: 50%;
+      padding: 12px 12px 0 12px;
+      margin-bottom: 8px;
+    }
+    /* project cards enhancement */
+    .project-card {
+      background: #2d2d2d;
+      border-radius: 12px;
+      padding: 1rem;
+      transition: 0.2s;
+      border: 1px solid #3e3e3e;
+    }
+    .project-card:hover {
+      border-color: #3b82f6;
+      background: #333;
+      box-shadow: 0 4px 12px rgba(59,130,246,0.2);
+    }
+    .project-tech {
+      display: inline-block;
+      background: #3c3c3c;
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      margin: 5px 5px 0 0;
+      color: #ccc;
+      transition: 0.2s;
+    }
+    .project-tech:hover {
+      background: #3b82f6;
+      color: white;
+    }
+    .w3-tag {
+      background: #3c3c3c;
+      color: #ddd;
+    }
+    .w3-dark-grey {
+      background-color: #3a3a3a !important;
+    }
+    /* force text to be slightly brighter */
+    .w3-text-grey {
+      color: #c0c0c0 !important;
+    }
+    hr {
+      border-color: #444;
+    }
+    /* adjust icons for dev */
+    .fa-code, .fa-database {
+      margin-right: 6px;
+    }
+
+    /* Desktop: show sidebar, hide mobile nav */
+    @media (min-width: 993px) {
+      #desktopSidebar {
+        display: block !important;
+      }
+      #mobileNavContainer {
+        display: none !important;
+      }
+      #menuOverlay {
+        display: none !important;
+      }
+    }
+    
+    /* Mobile/Tablet: hide sidebar, show mobile nav */
+    @media (max-width: 992px) {
+      #desktopSidebar {
+        display: none !important;
+      }
+      #mobileNavContainer {
+        display: block !important;
+      }
+      /* Add padding to main content to prevent overlap */
+      #main {
+        margin-left: 0 !important;
+        padding-top: 20px !important;
+      }
+    }
+    
+    /* Mobile menu button styling */
+    #menuToggle {
+      border: none;
+      cursor: pointer;
+      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+      background: #3b82f6 !important;
+    }
+    
+    #menuToggle:hover {
+      background: #2563eb !important;
+      transform: scale(1.05);
+    }
+    
+    /* Menu panel styling */
+    #menuPanel {
+      padding-top: 80px; /* Space for the close button area */
+      background: #1a1a2e !important;
+    }
+    
+    #menuPanel a:hover {
+      background: #3b82f6 !important;
+      color: white !important;
+    }
+    
+    /* Make sure overlay covers everything */
+    #menuOverlay {
+      transition: display 0.2s;
+    }
+    
+    /* ----- BLUE ACCENT CUSTOMIZATIONS (vibrant but professional) ----- */
+    .w3-button.w3-blue-glow {
+      background: #3b82f6;
+      transition: all 0.3s ease;
+    }
+    .w3-button.w3-blue-glow:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(59,130,246,0.4);
+    }
+    .blue-accent-text {
+      color: #60a5fa !important;
+    }
+    .blue-border-bottom {
+      border-bottom: 3px solid #3b82f6;
+      display: inline-block;
+      padding-bottom: 6px;
+    }
+    .skill-bar-fill {
+      background: linear-gradient(90deg, #3b82f6, #60a5fa) !important;
+      width: 0%;
+      animation: fillBar 1.2s ease forwards;
+    }
+    @keyframes fillBar {
+      to { width: var(--target-width); }
+    }
+    .w3-dark-grey {
+      background-color: #3a3a3a !important;
+    }
+    .w3-hover-blue:hover {
+      background-color: #3b82f6 !important;
+      color: white !important;
+      transition: 0.2s;
+    }
+    .blue-glow-card {
+      transition: all 0.2s;
+    }
+    .blue-glow-card:hover {
+      border-color: #3b82f6;
+      box-shadow: 0 8px 20px rgba(59,130,246,0.25);
+    }
+    .contact-icon {
+      transition: 0.2s;
+    }
+    .contact-icon:hover {
+      color: #3b82f6 !important;
+      transform: scale(1.1);
+    }
+    .stats-section {
+      background: #1e1e2f !important;
+      border-radius: 16px;
+    }
+    .w3-light-grey {
+      background-color: #2a2a2a !important;
+    }
+    .w3-blue-modern {
+      background: #3b82f6 !important;
+    }
+    .btn-outline-blue {
+      border: 2px solid #3b82f6;
+      background: transparent;
+      transition: 0.2s;
+    }
+    .btn-outline-blue:hover {
+      background: #3b82f6;
+      color: white;
+    }
+    .section-title {
+      position: relative;
+      display: inline-block;
+    }
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: #3b82f6;
+      border-radius: 3px;
+    }
+    .w3-bar-item i {
+      transition: 0.2s;
+    }
+    .w3-bar-item:hover i {
+      color: #3b82f6 !important;
+    }
+    #desktopSidebar a:hover i {
+      color: #60a5fa !important;
+    }
+    footer a i {
+      transition: 0.2s;
+    }
+    footer a:hover i {
+      color: #3b82f6 !important;
+      transform: scale(1.2);
+    }
+    .highlight-blue {
+      color: #60a5fa;
+      font-weight: 500;
+    }
+    .w3-progress-container {
+      border-radius: 30px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body class="w3-black">
+<!-- Icon Bar (Sidebar - desktop) with blue hover accents -->
+<nav class="w3-sidebar w3-bar-block w3-small w3-center" style="width:120px; background:#222; z-index:3; display: block;" id="desktopSidebar">
+  <!-- Avatar image -->
+  <img src="me.jpeg" alt="Luis Rotich" style="width:100%; border-radius: 50%; padding: 12px 12px 0 12px; border: 2px solid #3b82f6;">
+  <a href="#" class="w3-bar-item w3-button w3-padding-large w3-black">
+    <i class="fa fa-home w3-xxlarge" style="color: #60a5fa;"></i>
+    <p>HOME</p>
+  </a>
+  <a href="#about" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-user w3-xxlarge"></i>
+    <p>ABOUT</p>
+  </a>
+  <a href="#skills" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-code w3-xxlarge"></i>
+    <p>SKILLS</p>
+  </a>
+  <a href="#projects" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-folder-open w3-xxlarge"></i>
+    <p>PROJECTS</p>
+  </a>
+  <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-envelope w3-xxlarge"></i>
+    <p>CONTACT</p>
+  </a>
+</nav>
+
+<!-- Mobile Navigation - Right Side Toggle Menu (Blue themed) -->
+<div class="w3-hide-large w3-hide-medium" id="mobileNavContainer">
+  <!-- Menu Toggle Button (always visible) - now vibrant blue -->
+  <button id="menuToggle" class="w3-button w3-xlarge" style="position: fixed; top: 20px; right: 20px; z-index: 1002; border-radius: 50%; width: 60px; height: 60px; padding: 0; box-shadow: 0 4px 15px rgba(59,130,246,0.5); background: #3b82f6; color: white;">
+    <i id="menuIcon" class="fa fa-bars"></i>
+  </button>
+  
+  <!-- Slide-out Menu Panel (hidden by default) with blue gradient accent -->
+  <div id="menuPanel" style="position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: #0f0f1a; z-index: 1001; transition: right 0.3s ease; box-shadow: -5px 0 25px rgba(0,0,0,0.5); overflow-y: auto; border-left: 2px solid #3b82f6;">
+    <!-- Avatar in mobile menu with blue border -->
+    <div style="text-align: center; padding: 30px 0 15px;">
+      <img src="me.jpeg" alt="Luis Rotich" style="width: 90px; border-radius: 50%; border: 3px solid #3b82f6; box-shadow: 0 0 12px rgba(59,130,246,0.3);">
+      <h4 style="color: white; margin-top: 12px;">Luis Rotich</h4>
+    </div>
+    
+    <!-- Menu Links -->
+    <a href="#" class="w3-bar-item w3-button w3-padding-large" style="display: block; color: white; text-align: left; font-size: 1.2rem; border-bottom: 1px solid #333;" onclick="closeMenu()">
+      <i class="fa fa-home w3-margin-right" style="color: #60a5fa;"></i> HOME
+    </a>
+    <a href="#about" class="w3-bar-item w3-button w3-padding-large" style="display: block; color: white; text-align: left; font-size: 1.2rem; border-bottom: 1px solid #333;" onclick="closeMenu()">
+      <i class="fa fa-user w3-margin-right" style="color: #60a5fa;"></i> ABOUT
+    </a>
+    <a href="#skills" class="w3-bar-item w3-button w3-padding-large" style="display: block; color: white; text-align: left; font-size: 1.2rem; border-bottom: 1px solid #333;" onclick="closeMenu()">
+      <i class="fa fa-code w3-margin-right" style="color: #60a5fa;"></i> SKILLS
+    </a>
+    <a href="#projects" class="w3-bar-item w3-button w3-padding-large" style="display: block; color: white; text-align: left; font-size: 1.2rem; border-bottom: 1px solid #333;" onclick="closeMenu()">
+      <i class="fa fa-folder-open w3-margin-right" style="color: #60a5fa;"></i> PROJECTS
+    </a>
+    <a href="#contact" class="w3-bar-item w3-button w3-padding-large" style="display: block; color: white; text-align: left; font-size: 1.2rem; border-bottom: 1px solid #333;" onclick="closeMenu()">
+      <i class="fa fa-envelope w3-margin-right" style="color: #60a5fa;"></i> CONTACT
+    </a>
+  </div>
+</div>
+
+<!-- Overlay (when menu is open) -->
+<div id="menuOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: none;" onclick="closeMenu()"></div>
+
+<!-- Page Content -->
+<div class="w3-padding-large" id="main">
+  <!-- Header/Home with blue accent line -->
+  <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
+    <h1 class="w3-jumbo"><span class="w3-hide-small"></span> <span style="color: #60a5fa;">Luis</span> Rotich</h1>
+    <p class="w3-large">💻 Software Developer · <span style="color: #60a5fa;">Tech Entrepreneur</span> · Innovator</p>
+    <!-- developer-friendly header image with blue border subtle -->
+    <img src="me.jpeg" alt="developer workspace" class="w3-image" style="width:100%; max-width:992px; border-radius: 20px; margin-top: 20px; border: 2px solid #3b82f6; box-shadow: 0 8px 20px rgba(0,0,0,0.5);">
+  </header>
+
+  <!-- About Section with Luis's details + blue highlights -->
+  <div class="w3-content w3-justify w3-text-grey w3-padding-64" id="about">
+    <h2 class="w3-text-light-grey section-title" style="font-size: 2rem;">Luis Rotich</h2>
+    <hr style="width:200px; background: #3b82f6; height: 2px;" class="w3-opacity">
+    <p class="w3-large">
+  I'm a <span style="color: #f2ff00; font-weight: 600;">web developer</span> ..<span style="color: #3b82f6; font-weight: 500;">Karatina University Student, Kenya</span>, currently pursuing a <span style="color: #00ff11; font-weight: 500;">Bachelor of Information Technology</span>. 
+  I build digital solutions with a <span style="background: linear-gradient(135deg, #3b82f6, #60a5fa); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 500;">business-minded approach</span>. 
+  I'm passionate about <span style="color: #60a5fa;">software engineering</span>, <span style="color: #3b82f6;">artificial intelligence</span>, <span style="color: #60a5fa;">blockchain development</span>, and <span style="color: #3b82f6;">data science</span>. 
+  As an introverted strategic thinker, I'm always exploring new technologies and building products that <span style="color: #60a5fa; font-weight: 500;">solve real problems</span>.
+</p>
+    <!-- Additional business interests with blue icons -->
+    <div class="w3-panel w3-padding-16" style="background: #1e1e2a; border-radius: 12px; margin-top: 20px; border-left: 4px solid #3b82f6;">
+      <h4 class="w3-text-light-grey"><i class="" style="color: #60a5fa;"></i> Business & interests</h4>
+      <p class="w3-text-grey">Technology startups · Clothing industry · Gift cards · E-commerce · AI · Blockchain · Cars · Music · Blogging</p>
+    </div>
+   <!-- stats with Luis's context and blue download button -->
+    <div class="w3-row w3-center w3-padding-16 w3-section w3-light-grey stats-section" style="border-radius: 20px;">
+      <a href="Luis_Rotich.pdf" download class="w3-button w3-blue-glow w3-padding-large w3-section w3-round-xxlarge" style="text-decoration: none; background: #3b82f6; color: white; font-weight: bold;">
+        <i class="fa fa-download"></i> Download Resume
+      </a>
+    </div>
+  </div>
+    <hr style="border-color:#444; margin-top: 40px;">
+
+  <!-- SKILLS section with detailed tech stack + blue animated bars -->
+  <div class="w3-padding-64 w3-content" id="skills">
+    <h2 class="w3-text-light-grey section-title">Skills & Expertise</h2>
+    <hr style="width:200px; background: #3b82f6; height: 2px;" class="w3-opacity">
+    <br>
+    <h3 class="w3-padding-16 w3-text-light-grey"><i class="fa fa-code" style="color: #60a5fa;"></i> Core competences</h3>
+    <p class="w3-wide"><i class="fa fa-code"></i> Languages: HTML, CSS, JavaScript, Node.js, Python</p>
+    <div class="w3-white w3-progress-container" style="border-radius: 30px;">
+      <div class="skill-bar-fill" style="height:28px; width:0%; --target-width: 90%; animation: fillBar 1s ease forwards; background: linear-gradient(90deg, #3b82f6, #60a5fa); border-radius: 30px;"></div>
+    </div>
+    <p class="w3-wide"><i class="fa fa-database"></i> Databases: MySQL, API Integration, PostgreSQL</p>
+    <div class="w3-white w3-progress-container" style="border-radius: 30px;">
+      <div class="skill-bar-fill" style="height:28px; width:0%; --target-width: 85%; animation: fillBar 1s ease forwards 0.1s; background: linear-gradient(90deg, #3b82f6, #60a5fa); border-radius: 30px;"></div>
+    </div>
+    <p class="w3-wide"><i class="fa fa-cube"></i> Blockchain: Basic Development, Web3 Concepts</p>
+    <div class="w3-white w3-progress-container" style="border-radius: 30px;">
+      <div class="skill-bar-fill" style="height:28px; width:0%; --target-width: 50%; animation: fillBar 1s ease forwards 0.2s; background: linear-gradient(90deg, #3b82f6, #60a5fa); border-radius: 30px;"></div>
+    </div>
+    <p class="w3-wide"><i class="fa fa-shield"></i> System Development & API Integration</p>
+    <div class="w3-white w3-progress-container" style="border-radius: 30px;">
+      <div class="skill-bar-fill" style="height:28px; width:0%; --target-width: 80%; animation: fillBar 1s ease forwards 0.3s; background: linear-gradient(90deg, #3b82f6, #60a5fa); border-radius: 30px;"></div>
+    </div><br>
+    
+    <h2 class="w3-text-light-grey">Tech stack & Tools</h2>
+    <hr style="width:200px; background: #3b82f6; height: 2px;" class="w3-opacity">
+    <div class="w3-row-padding" style="margin:0 -16px">
+      <div class="w3-half w3-margin-bottom">
+        <ul class="w3-ul w3-white w3-center w3-opacity w3-hover-opacity-off w3-card-4" style="border-top: 4px solid #3b82f6;">
+          <li class="w3-dark-grey w3-xlarge w3-padding-32" style="background: #2a2a2a !important;"><i class="fa fa-code"></i> Languages & Web</li>
+          <li class="w3-padding-16">HTML · CSS · JavaScript · Node.js · Python</li>
+          <li class="w3-padding-16">MySQL · API Integration</li>
+          <li class="w3-padding-16">Basic Blockchain · Web3 Concepts</li>
+          <li class="w3-padding-16">System Development</li>
+          <li class="w3-light-grey w3-padding-24">
+            <span class="w3-tag w3-dark-grey" style="background: #3b82f6 !important;">Web</span>
+            <span class="w3-tag w3-dark-grey" style="background: #3b82f6 !important;">Blockchain</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="w3-half">
+        <ul class="w3-ul w3-white w3-center w3-opacity w3-hover-opacity-off w3-card-4" style="border-top: 4px solid #3b82f6;">
+          <li class="w3-dark-grey w3-xlarge w3-padding-32" style="background: #2a2a2a !important;"><i class="fa fa-lightbulb-o"></i> Interests & Emerging</li>
+          <li class="w3-padding-16">Artificial Intelligence · Machine learning</li>
+          <li class="w3-padding-16">Blockchain · Cryptography</li>
+          <li class="w3-padding-16">Software Engineering · Ethical Hacking</li>
+          <li class="w3-padding-16">Web3 · AI Engineering (goal)</li>
+          <li class="w3-light-grey w3-padding-24">
+            <span class="w3-tag w3-dark-grey" style="background: #3b82f6 !important;">AI</span>  
+            <span class="w3-tag w3-dark-grey" style="background: #3b82f6 !important;">Web3</span>
+            <span class="w3-tag w3-dark-grey" style="background: #3b82f6 !important;">Blockchain</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+    <hr style="border-color:#444; margin-top: 40px;">
+
+  <!-- PROJECTS SECTION – Luis's actual projects with blue hover accents -->
+  <div class="w3-padding-64 w3-content" id="projects">
+    <h2 class="w3-text-light-grey section-title">My Projects</h2>
+    <hr style="width:200px; background: #3b82f6; height: 2px;" class="w3-opacity">
+
+    <!-- Project grid -->
+    <div class="w3-row-padding" style="margin:0 -16px">
+      <!-- left column -->
+      <div class="w3-half">
+         <!-- project card 2 -->
+        <div class="project-card w3-margin-bottom blue-glow-card">
+          <div class="project-screenshot" style="width: 100%; height: 140px; background: #333; border-radius: 8px; margin-bottom: 15px; overflow: hidden; border: 1px solid #444; display: flex; align-items: center; justify-content: center; position: relative;">
+            <img src="lemonade.jpeg" alt="Lemonade Kenya App screenshot" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.9;">
+            <div style="position: absolute; top: 5px; right: 5px; background: rgba(59,130,246,0.8); color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem;">
+              <i class="fa fa-image"></i> demo
+            </div>
+          </div>
+          <h3 class="w3-text-light-grey">Lemonade Kenya App <i class="fa fa-apple" style="color: #60a5fa;"></i></h3>
+          <p class="w3-small w3-text-grey">Mobile-first web application for lemonade distribution and orders in Kenya. Features real-time tracking.</p>
+          <div>
+            <span class="project-tech">JavaScript</span>
+            <span class="project-tech">API</span>
+            <span class="project-tech">CSS</span>
+            <span class="project-tech">PWA</span>
+            <span class="project-tech">nodejs</span>
+          </div>
+          <hr style="border-color:#444;">
+          <div class="w3-row">
+            <div class="w3-half"><i class="fa fa-star blue-accent-text"></i> Launching soon</div>
+            <div class="w3-margin-top w3-center">
+                <a href="https://lemonadekenya.up.railway.app/" target="_blank" class="w3-button w3-small w3-blue-glow w3-round" style="border-radius: 20px; padding: 6px 20px; background: #3b82f6;">
+                <i class="fa fa-external-link"></i> Visit Site
+                </a>
+            </div>
+          </div>
+        </div>
+        <!-- project card 1 -->
+        <div class="project-card w3-margin-bottom blue-glow-card">
+          <div class="project-screenshot" style="width: 100%; height: 140px; background: #333; border-radius: 8px; margin-bottom: 15px; overflow: hidden; border: 1px solid #444; display: flex; align-items: center; justify-content: center; position: relative;">
+            <img src="kobil.jpeg" alt="Kobill Motor Spares" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.9;">
+            <div style="position: absolute; top: 5px; right: 5px; background: rgba(59,130,246,0.8); color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem;">
+              <i class="fa fa-image"></i> preview
+            </div>
+          </div>
+          <h3 class="w3-text-light-grey">Kobill Motor Spares System</h3>
+          <p class="w3-small w3-text-grey">Comprehensive inventory and sales management system for motor spares business. Built with PHP and MySQL.</p>
+          <div>
+            <span class="project-tech">JavaScript</span>
+            <span class="project-tech">MySQL</span>
+            <span class="project-tech">Inventory</span>
+            <span class="project-tech">Bootstrap</span>
+          </div>
+          <hr style="border-color:#444;">
+          <div class="w3-row">
+            <div class="w3-half"><i class="fa fa-cog blue-accent-text"></i> Developed</div>
+          </div>
+        </div>
+       
+        <!-- project card 3 -->
+        <div class="project-card w3-margin-bottom blue-glow-card">
+          <div class="project-screenshot" style="width: 100%; height: 140px; background: #333; border-radius: 8px; margin-bottom: 15px; overflow: hidden; border: 1px solid #444; display: flex; align-items: center; justify-content: center; position: relative;">
+            <img src="lrc.jpeg" alt="LR Coin Web3" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.9;">
+            <div style="position: absolute; top: 5px; right: 5px; background: rgba(59,130,246,0.8); color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem;">
+              <i class="fa fa-link"></i> web3
+            </div>
+          </div>
+          <h3 class="w3-text-light-grey">LR Coin Web3 Website</h3>
+          <p class="w3-small w3-text-grey">Landing and informational platform for LR Coin, showcasing Web3 integration and cryptocurrency concept.</p>
+          <div>
+            <span class="project-tech">Web3</span>
+            <span class="project-tech">Blockchain</span>
+            <span class="project-tech">HTML/CSS</span>
+            <span class="project-tech">JavaScript</span>
+            <span class="project-tech">solidity</span>
+          </div>
+          <hr style="border-color:#444;">
+          <div class="w3-row">
+            <div class="w3-half"><i class="fa fa-bitcoin blue-accent-text"></i> Crypto</div>
+            <div class="w3-half w3-right-align"><i class="fa fa-code-fork blue-accent-text"></i> Web3 concept</div>
+            <div class="w3-margin-top w3-center">
+                <a href="https://thornesverse.netlify.app/" target="_blank" class="w3-button w3-small w3-blue-glow w3-round" style="background: #3b82f6;">
+                <i class="fa fa-external-link"></i> Visit Site
+                </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- right column -->
+      <div class="w3-half">
+        <!-- project card 4 -->
+        <div class="project-card w3-margin-bottom blue-glow-card">
+          <div class="project-screenshot" style="width: 100%; height: 140px; background: #333; border-radius: 8px; margin-bottom: 15px; overflow: hidden; border: 1px solid #444; display: flex; align-items: center; justify-content: center; position: relative;">
+            <img src="ussd.jpeg" alt="USSD Insurance System" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.9;">
+            <div style="position: absolute; top: 5px; right: 5px; background: rgba(59,130,246,0.8); color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem;">
+              <i class="fa fa-phone"></i> USSD
+            </div>
+          </div>
+          <h3 class="w3-text-light-grey">USSD Insurance System (*852#)</h3>
+          <p class="w3-small w3-text-grey">USSD-based insurance query and registration system. Accessible via feature phones, built with PHP and Africa's Talking API.</p>
+          <div>
+            <span class="project-tech">USSD</span>
+            <span class="project-tech">PHP</span>
+            <span class="project-tech">API</span>
+            <span class="project-tech">MySQL</span>
+          </div>
+          <hr style="border-color:#444;">
+          <div class="w3-row">
+            <div class="w3-half"><i class="fa fa-phone blue-accent-text"></i> *852#</div>
+            <div class="w3-half w3-right-align"><i class="fa fa-shield blue-accent-text"></i> Insurance</div>
+          </div>
+        </div>
+        <!-- project card 5 -->
+        <div class="project-card w3-margin-bottom blue-glow-card">
+          <div class="project-screenshot" style="width: 100%; height: 140px; background: #333; border-radius: 8px; margin-bottom: 15px; overflow: hidden; border: 1px solid #444; display: flex; align-items: center; justify-content: center; position: relative;">
+            <img src="water.jpeg" alt="Waterfront Bogoria Restaurant" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.9;">
+            <div style="position: absolute; top: 5px; right: 5px; background: rgba(59,130,246,0.8); color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem;">
+              <i class="fa fa-cutlery"></i> booking
+            </div>
+          </div>
+          <h3 class="w3-text-light-grey">Waertfront Bogoria Restaurant</h3>
+          <p class="w3-small w3-text-grey">Restaurant website with online booking and reservation system. Customers can book tables, view menus, and manage reservations.</p>
+          <div>
+            <span class="project-tech">PHP</span>
+            <span class="project-tech">MySQL</span>
+            <span class="project-tech">Booking System</span>
+            <span class="project-tech">JavaScript</span>
+            <span class="project-tech">Bootstrap</span>
+          </div>
+          <hr style="border-color:#444;">
+          <div class="w3-row">
+            <div class="w3-half"><i class="fa fa-cutlery blue-accent-text"></i> Restaurant</div>
+            <div class="w3-half w3-right-align"><i class="fa fa-calendar blue-accent-text"></i> Online Booking</div>
+          </div>
+          <div class="w3-margin-top w3-center">
+            <a href="https://waterfrontbogoria.netlify.app/" target="_blank" class="w3-button w3-small w3-blue-glow w3-round" style="background: #3b82f6;">
+              <i class="fa fa-external-link"></i> Visit Site
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr style="border-color:#444; margin-top: 40px;">
+    <p class="w3-center w3-padding-16"><i class="fa fa-github blue-accent-text"></i> Find more on <a href="https://github.com/luisrotich" class="w3-hover-text-blue" style="color: #60a5fa;">github.com/luisrotich</a></p>
+  </div>
+    <hr style="border-color:#444; margin-top: 40px;">
+
+  <!-- Contact / Hire me Section with Luis's details + blue accents -->
+  <div class="w3-padding-64 w3-content w3-text-grey" id="contact">
+    <h2 class="w3-text-light-grey section-title">Hire me</h2>
+    <hr style="width:200px; background: #3b82f6; height: 2px;" class="w3-opacity">
+
+    <div class="w3-section">
+      <p class="contact-icon"><i class="fa fa-map-marker fa-fw w3-text-white w3-xxlarge w3-margin-right" style="color: #60a5fa;"></i> Karatina, Kenya (remote / freelance)</p>
+      <p class="contact-icon"><i class="fa fa-phone fa-fw w3-text-white w3-xxlarge w3-margin-right" style="color: #60a5fa;"></i> +254 745 972350</p>
+      <p class="contact-icon"><i class="fa fa-envelope fa-fw w3-text-white w3-xxlarge w3-margin-right" style="color: #60a5fa;"></i> rotichluis@gmail.com</p>
+      <p class="contact-icon"><i class="fa fa-whatsapp fa-fw w3-text-white w3-xxlarge w3-margin-right" style="color: #60a5fa;"></i> +254 745 972350</p>
+    </div><br>
+    
+    <p class="w3-text-light-grey">Available for freelance, tech collaborations, and innovative projects. Reach out directly:</p>
+    
+    <!-- Hire me buttons row with blue modern style -->
+    <div class="w3-row-padding" style="margin: 20px -16px;">
+      <div class="w3-third w3-margin-bottom">
+        <a href="https://wa.me/254745972350" target="_blank" class="w3-button w3-block w3-green w3-padding-large" style="border-radius: 8px; background: #25D366; font-weight: bold;">
+          <i class="fa fa-whatsapp"></i> WhatsApp me
+        </a>
+      </div>
+      <div class="w3-third w3-margin-bottom">
+        <a href="tel:+254745972350" class="w3-button w3-block w3-blue-glow w3-padding-large" style="border-radius: 8px; background: #3b82f6;">
+          <i class="fa fa-phone"></i> Call now
+        </a>
+      </div>
+      <div class="w3-third w3-margin-bottom">
+        <a href="mailto:rotichluis@gmail.com" class="w3-button w3-block w3-red w3-padding-large" style="border-radius: 8px; background: #dc2626;">
+          <i class="fa fa-envelope"></i> Send email
+        </a>
+      </div>
+    </div>
+    
+  <!-- Footer with social and company credit - blue hover icons -->
+  <footer class="w3-content w3-padding-64 w3-text-grey w3-xlarge">
+    <a href="https://github.com/luisrotich" target="_blank" class="w3-hover-opacity" style="text-decoration: none; margin-right: 20px;">
+      <i class="fa fa-github"></i>
+    </a>
+    <a href="https://x.com/luis_rotich15" target="_blank" class="w3-hover-opacity" style="text-decoration: none; margin-right: 20px;">
+      <i class="fa fa-twitter"></i>
+    </a>
+    <a href="https://www.facebook.com/share/18AnMJNWqz/" target="_blank" class="w3-hover-opacity" style="text-decoration: none;">
+      <i class="fa fa-facebook"></i>
+    </a>
+    <p class="w3-medium" style="margin-top: 15px;">© 2025 Luis Rotich · <span style="color: #60a5fa;">Code. Create. Innovate. Connecting ideas, building the future.</span></p>
+  </footer>
+  <!-- END PAGE CONTENT -->
+</div>
+
+<script>
+  // Menu functionality
+  const menuToggle = document.getElementById('menuToggle');
+  const menuPanel = document.getElementById('menuPanel');
+  const menuOverlay = document.getElementById('menuOverlay');
+  const menuIcon = document.getElementById('menuIcon');
+  
+  function toggleMenu() {
+    if (menuPanel.style.right === '0px') {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  }
+  
+  function openMenu() {
+    menuPanel.style.right = '0px';
+    menuOverlay.style.display = 'block';
+    menuIcon.className = 'fa fa-times';
+    document.body.style.overflow = 'hidden';
+  }
+  
+  function closeMenu() {
+    menuPanel.style.right = '-280px';
+    menuOverlay.style.display = 'none';
+    menuIcon.className = 'fa fa-bars';
+    document.body.style.overflow = '';
+  }
+  
+  if (menuToggle) {
+    menuToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleMenu();
+    });
+  }
+  
+  document.querySelectorAll('#menuPanel a').forEach(link => {
+    link.addEventListener('click', function() {
+      closeMenu();
+    });
+  });
+  
+  // Animate skill bars on load (already handled by CSS, but ensure target width works)
+  window.addEventListener('load', function() {
+    const bars = document.querySelectorAll('.skill-bar-fill');
+    bars.forEach(bar => {
+      const width = getComputedStyle(bar).getPropertyValue('--target-width');
+      if(width) bar.style.width = width;
+    });
+  });
+</script>
+</body>
+</html>
